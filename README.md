@@ -68,6 +68,16 @@ String str = readTextVal("文件名.txt"); // 一行代码读取
 
 
 
+### 文件/文件夹操作
+
+```Java
+ensureDirExist(path); // 确保目录存在，没有的话生成一个
+
+isFileExist(path); // 文件是否存在
+```
+
+
+
 ### 一行代码联网
 
 最简单的例子
