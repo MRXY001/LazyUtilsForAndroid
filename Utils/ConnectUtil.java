@@ -3,13 +3,14 @@ package com.iwxyi.letsremember.Utils;
 /**
  * @author: mrxy001
  * @time: 2019.2.20
- * @Change: 2019.3.17
  * 宇宙超级无敌联网类
  * 一行搞定取网页源码问题
  * 注意需要联网权限(否则本类最后一个方法会报错，但是能通过编译)
  * <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  * Android P 需要 android:usesCleartextTraffic="true"
+ * @Change: 2019.5.5
+ * - 添加无回调函数的重载
  */
 
 import android.annotation.SuppressLint;
@@ -285,6 +286,37 @@ public class ConnectUtil implements Runnable {
 
 
     /******************************** inner Class ************************************/
+    static public void Get(String path) {
+        Thread thread = new Thread(new ConnectUtil(path, "", 0, new Handler()));
+        thread.start();
+    }
+
+    static public void Get(String path, String param) {
+        Thread thread = new Thread(new ConnectUtil(path, param, 0, new Handler()));
+        thread.start();
+    }
+
+    static public void Get(String path, String[] params) {
+        Thread thread = new Thread(new ConnectUtil(path, params, 0, new Handler()));
+        thread.start();
+    }
+
+    static public void Post(String path) {
+        Thread thread = new Thread(new ConnectUtil(path, "", 0, new Handler()).post());
+        thread.start();
+    }
+
+    static public void Post(String path, String param) {
+        Thread thread = new Thread(new ConnectUtil(path, param, 0, new Handler()).post());
+        thread.start();
+    }
+
+    static public void Post(String path, String[] params) {
+        Thread thread = new Thread(new ConnectUtil(path, params, 0, new Handler()).post());
+        thread.start();
+    }
+
+    /******************************** inner Class ************************************/
 
     String path, param;
     String method = "GET";
@@ -339,7 +371,7 @@ public class ConnectUtil implements Runnable {
         param = url.toString();
     }
 
-    public ConnectUtil(Handler handler, String path, String[] params) {
+    public ConnectUtil(String path, String[] params, Handler handler) {
         this(path, params, 0, handler);
     }
 
