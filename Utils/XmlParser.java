@@ -1,5 +1,7 @@
 package com.iwxyi.letsremember.Utils;
 
+import android.util.Log;
+
 import com.iwxyi.letsremember.Globals.App;
 
 /*
@@ -8,10 +10,14 @@ import com.iwxyi.letsremember.Globals.App;
  * @author MRXY001
  * @date   2019/3/17 15 13
  * @email  wxy19980615@gmail.com
+ * @Update: 2019.5.7
+ * - 优化列表解析器，单方向从字符串转成列表，并且保留字符串方法
  */
 public class XmlParser {
      private String full;
      private String[] list;
+     private int size = 0;
+     private int current_index = -1;
 
     public XmlParser(String text) {
         full = text;
@@ -48,7 +54,25 @@ public class XmlParser {
     /***************** list **************/
 
     public void split(String tag) {
-        list = (String[])StringUtil.getXmls(full, tag).toArray();
+        list = StringUtil.getXmls(full, tag).toArray(new String[0]);
+    }
+
+    public int size() {
+        if (size == 0) {
+            if (list.length == 0)
+                return 0;
+            return size = list.length;
+        }
+        return size;
+    }
+
+    public void setIndex(int x) {
+        if (x < 0 || x >= list.length) {
+            Log.e("====XmlParser列表错误", "数组下标溢出");
+            return ;
+        }
+        full = list[x];
+        current_index = x;
     }
 
     public String getItem(int index) {
